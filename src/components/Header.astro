@@ -1,0 +1,130 @@
+---
+import { SITE, LINKS } from "../consts"
+import { Image } from "astro:assets"
+import Link from "./Link.astro"
+import cover from "../../public/landing.png"
+---
+
+<header>
+  <div class="container">
+    <div class="landing-cover">
+      <Image src={cover} alt="" />
+    </div>
+    <div class="landing-content">
+      <h1>
+        <span></span>
+        <span></span>
+        {SITE.title}
+      </h1>
+      <p>
+        Explore CSS Tips from basic to advanced that would help you easily build
+        responsive layouts with CSS.
+      </p>
+      <span
+        >Compiled by <Link newTab={true} href={LINKS.twitter.link}>
+          {LINKS.twitter.username}
+        </Link>
+      </span>
+    </div>
+  </div>
+</header>
+<style>
+  header {
+    position: relative;
+    padding: 40px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      background: #1a120b;
+      inset: 0px;
+      z-index: -1;
+      height: 40%;
+      background-image: radial-gradient(var(--dark-theme) 1px, #1a120b 1px);
+      background-size: 10px 10px;
+    }
+
+    img {
+    }
+
+    .landing-content {
+      margin-left: 10px;
+      padding: 60px 0;
+    }
+
+    h1 {
+      color: #ff9bd2;
+      font-size: clamp(2rem, 7vw, 5rem);
+      position: relative;
+      display: inline-block;
+      border: 1px solid currentColor;
+      padding: 20px;
+
+      span {
+        --offset: -4px;
+        color: inherit;
+
+        &::before,
+        &::after {
+          position: absolute;
+          content: "";
+          width: 8px;
+          height: 8px;
+          background-color: currentColor;
+        }
+
+        &:nth-child(1)::before {
+          left: var(--offset);
+          top: var(--offset);
+        }
+
+        &:nth-child(1)::after {
+          right: var(--offset);
+          top: var(--offset);
+        }
+
+        &:nth-child(2)::before {
+          left: var(--offset);
+          bottom: var(--offset);
+        }
+
+        &:nth-child(2)::after {
+          right: var(--offset);
+          bottom: var(--offset);
+        }
+      }
+    }
+
+    p {
+      font-size: clamp(1.2rem, 7vw, 1.5rem);
+      max-width: 700px;
+      width: 100%;
+      color: #d5cea3;
+      padding: 20px;
+    }
+
+    span {
+      display: block;
+      padding: 20px;
+      font-size: clamp(1rem, 7vw, 1.2rem);
+      color: #d5cea3;
+    }
+
+    a {
+      display: inline-block;
+      color: #d5cea3;
+      padding: 5px 8px;
+      border: 1px solid currentColor;
+      color: #ff9bd2;
+      background-color: #1a120b;
+      transition:
+        color 300ms,
+        background-color 300ms;
+
+      &:hover {
+        color: #1a120b;
+        background-color: #ff9bd2;
+      }
+    }
+  }
+</style>

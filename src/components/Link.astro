@@ -1,0 +1,32 @@
+---
+import Icon from "./Icon.astro"
+
+const { newTab = false, href, className } = Astro.props
+
+const attr: {
+  href: string
+  className?: string
+  target?: "_blank"
+  rel?: string
+} = {
+  href,
+  className,
+}
+
+if (newTab) {
+  attr.target = "_blank"
+  attr.rel = "noopener noreferrer"
+}
+
+const icon = "twitter"
+---
+
+<a {...attr}> <Icon type="x" size={15} /> <slot /></a>
+
+<style>
+  a {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+</style>

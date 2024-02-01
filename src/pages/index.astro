@@ -1,0 +1,27 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import { SITE } from "../consts";
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE.title} description={SITE.description} />
+	</head>
+	<body>
+		<Header />
+		<hr />
+		<main></main>
+		<style>
+			hr {
+				border-width: 5px;
+				border: none;
+				height: 1px;
+				width: 100%;
+				background-color: color-mix(in srgb, #ff9bd2, transparent 50%);
+			}
+			/*  */
+		</style>
+	</body>
+</html>
