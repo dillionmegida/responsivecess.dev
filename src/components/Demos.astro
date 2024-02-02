@@ -1,0 +1,58 @@
+---
+import BoxHeading from "./BoxHeading.astro"
+import Link from "./Link.astro"
+import { getCollection } from "astro:content"
+
+const demos = (await getCollection("demo")).sort(
+  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+)
+---
+
+<section class="container">
+  <BoxHeading text="Demos" elem="h2" />
+  <div class="demos">
+    {
+      demos.map(demo => (
+        <div class="demo">
+          <Link href={`/demos/${demo.slug}/`}>
+            <div class="demo__cover">
+              <img src={demo.data.heroImage} alt="" />
+            </div>
+            <div class="demo__info">
+              <span>{demo.data.title}</span>
+            </div>
+          </Link>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style is:global lang="scss">
+  .demos {
+    display: grid;
+    --min-width: 350px;
+    grid-template-columns: repeat(auto-fill, minmax(var(--min-width), 1fr));
+    padding: 30px 0;
+    gap: 30px;
+
+    @media (max-width: 500px) {
+      --min-width: 250px;
+    }
+  }
+
+  .demo {
+    border: 1px solid var(--text-color);
+    font-size: 1.2rem;
+    transition: 300ms;
+
+    &:hover {
+      background-color: var(--primary-color-dark);
+      border-color: var(--secondary-color);
+    }
+  }
+
+  .demo__info {
+    padding: 10px 20px;
+  }
+</style>

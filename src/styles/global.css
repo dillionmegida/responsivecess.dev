@@ -7,55 +7,62 @@
  */
 
 * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 :root {
-	--dark-theme: #3C2A21;
+  --primary-color: #3c2a21;
+  --primary-color-dark: #1a120b;
+  --secondary-color: #ff9bd2;
+  --text-color: #d5cea3;
+  --primary-color: #3c2a21;
 }
 @font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-regular.woff") format("woff");
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
+  font-family: "Atkinson";
+  src: url("/fonts/atkinson-regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 @font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-bold.woff") format("woff");
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
+  font-family: "Atkinson";
+  src: url("/fonts/atkinson-bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 html {
-	/* background-color: var(--dark-theme); */
-  background-image: radial-gradient(
-    #1a120b 1px,
-        var(--dark-theme) 1px
-    );
-    background-size: 10px 10px;
+  /* background-color: var(--primary-color); */
+  background-image: radial-gradient(#1a120b 1px, var(--primary-color) 1px);
+  background-size: 10px 10px;
 }
 
 body {
-	font-family: "Atkinson", sans-serif;
-	margin: 0;
-	padding: 0;
+  font-family: "Atkinson", sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 img {
-	width: 100%;
-	display: block;
-	height: auto;
+  width: 100%;
+  display: block;
+  height: auto;
 }
 
 .container {
-	max-width: 1000px;
-	margin: 0 auto;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 a {
   text-decoration: none;
+}
+
+p,
+span {
+  color: var(--text-color);
 }

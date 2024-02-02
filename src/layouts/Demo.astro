@@ -1,0 +1,98 @@
+---
+import type { CollectionEntry } from "astro:content"
+import BaseHead from "../components/BaseHead.astro"
+import Header from "../components/Header.astro"
+import FormattedDate from "../components/FormattedDate.astro"
+import BoxHeading from "../components/BoxHeading.astro"
+import Link from "../components/Link.astro"
+
+type Props = CollectionEntry<"demo">["data"]
+
+const { title, description, pubDate, updatedDate, heroImage } = Astro.props
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+    <style>
+      .hero-image {
+        width: 100%;
+        aspect-ratio: 1920 / 1080;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <div class="container">
+        <div class="heading">
+          <div>
+            <Link className="home-link" href="/">Home</Link>
+          </div>
+          <BoxHeading text={title} elem="h1" />
+        </div>
+        <!-- <div class="date">
+          <FormattedDate date={pubDate} />
+          {
+            updatedDate && (
+              <div class="last-updated-on">
+                Last updated on <FormattedDate date={updatedDate} />
+              </div>
+            )
+          }
+        </div> -->
+        <article>
+          <!-- <div class="hero-image">
+            {heroImage && <img src={heroImage} alt="" />}
+          </div> -->
+          <div class="content">
+            <slot />
+          </div>
+        </article>
+      </div>
+
+      <style is:global lang="scss">
+        .home-link {
+          display: inline-block;
+          padding: 10px 20px;
+          border: 1px solid currentColor;
+          font-size: 1.3rem;
+          color: var(--text-color);
+          margin-bottom: 20px;
+          transition: 300ms;
+
+          &:hover {
+            background-color: var(--text-color);
+            color: var(--primary-color);
+          }
+        }
+
+        main {
+          padding: 20px 0 200px;
+          position: relative;
+
+          &::before {
+            content: "";
+            position: absolute;
+            background: var(--primary-color-dark);
+            inset: 0px;
+            z-index: -1;
+            height: 200px;
+            background-image: radial-gradient(
+              var(--primary-color) 1px,
+              var(--primary-color-dark) 1px
+            );
+            background-size: 10px 10px;
+          }
+        }
+
+        .heading {
+          margin-bottom: 20px;
+        }
+
+        .content {
+        }
+      </style>
+    </main>
+  </body>
+</html>

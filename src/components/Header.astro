@@ -1,130 +1,94 @@
 ---
 import { SITE, LINKS } from "../consts"
-import { Image } from "astro:assets"
 import Link from "./Link.astro"
-import cover from "../../public/landing.png"
+import BoxHeading from "./BoxHeading.astro"
 ---
 
 <header>
   <div class="container">
-    <div class="landing-cover">
-      <Image src={cover} alt="" />
-    </div>
     <div class="landing-content">
-      <h1>
-        <span></span>
-        <span></span>
-        {SITE.title}
-      </h1>
-      <p>
+      <BoxHeading elem="h1" text={SITE.title} />
+
+      <p class="landing-tagline">
         Explore CSS Tips from basic to advanced that would help you easily build
         responsive layouts with CSS.
       </p>
-      <span
+
+      <span class="twitter-link"
         >Compiled by <Link newTab={true} href={LINKS.twitter.link}>
-          {LINKS.twitter.username}
-        </Link>
-      </span>
+            {LINKS.twitter.username}
+          </Link>
+        </span>
     </div>
+    <!-- <div class="landing-cover">
+    <Image src={cover} alt="" />
+  </div> -->
   </div>
-</header>
-<style>
-  header {
-    position: relative;
-    padding: 40px;
 
-    &::before {
-      content: "";
-      position: absolute;
-      background: #1a120b;
-      inset: 0px;
-      z-index: -1;
-      height: 40%;
-      background-image: radial-gradient(var(--dark-theme) 1px, #1a120b 1px);
-      background-size: 10px 10px;
-    }
-
-    img {
-    }
-
-    .landing-content {
-      margin-left: 10px;
-      padding: 60px 0;
-    }
-
-    h1 {
-      color: #ff9bd2;
-      font-size: clamp(2rem, 7vw, 5rem);
+  <style is:global lang="scss">
+    header {
       position: relative;
-      display: inline-block;
-      border: 1px solid currentColor;
-      padding: 20px;
+      padding: 20px 0;
 
-      span {
-        --offset: -4px;
-        color: inherit;
+      &::before {
+        content: "";
+        position: absolute;
+        background: var(--primary-color-dark);
+        inset: 0px;
+        z-index: -1;
+        height: 60%;
+        background-image: radial-gradient(
+          var(--primary-color) 1px,
+          var(--primary-color-dark) 1px
+        );
+        background-size: 10px 10px;
+      }
 
-        &::before,
-        &::after {
-          position: absolute;
-          content: "";
-          width: 8px;
-          height: 8px;
-          background-color: currentColor;
-        }
+      img {
+      }
 
-        &:nth-child(1)::before {
-          left: var(--offset);
-          top: var(--offset);
-        }
+      .landing-content {
+        padding: 20px 0;
+      }
 
-        &:nth-child(1)::after {
-          right: var(--offset);
-          top: var(--offset);
-        }
+      h1 {
+      }
 
-        &:nth-child(2)::before {
-          left: var(--offset);
-          bottom: var(--offset);
-        }
+      .landing-tagline {
+        font-size: clamp(1.2rem, 7vw, 1.5rem);
+        max-width: 700px;
+        width: 100%;
+        color: var(--text-color);
+        padding: 20px;
+        border: 1px solid color-mix(in srgb, var(--text-color), transparent 60%);
+        margin-top: 10px;
+      }
 
-        &:nth-child(2)::after {
-          right: var(--offset);
-          bottom: var(--offset);
+      .twitter-link {
+        display: inline-block;
+        padding: 20px;
+        border: 1px solid color-mix(in srgb, var(--text-color), transparent 60%);
+        margin-top: 10px;
+        font-size: clamp(1rem, 7vw, 1.2rem);
+        color: var(--text-color);
+
+        a {
+          display: inline-block;
+          color: var(--text-color);
+          padding: 5px 8px;
+          border: 1px solid currentColor;
+          color: var(--secondary-color);
+          background-color: var(--primary-color-dark);
+          transition:
+            color 300ms,
+            background-color 300ms;
+
+          &:hover {
+            color: #1a120b;
+            background-color: var(--secondary-color);
+          }
         }
       }
     }
-
-    p {
-      font-size: clamp(1.2rem, 7vw, 1.5rem);
-      max-width: 700px;
-      width: 100%;
-      color: #d5cea3;
-      padding: 20px;
-    }
-
-    span {
-      display: block;
-      padding: 20px;
-      font-size: clamp(1rem, 7vw, 1.2rem);
-      color: #d5cea3;
-    }
-
-    a {
-      display: inline-block;
-      color: #d5cea3;
-      padding: 5px 8px;
-      border: 1px solid currentColor;
-      color: #ff9bd2;
-      background-color: #1a120b;
-      transition:
-        color 300ms,
-        background-color 300ms;
-
-      &:hover {
-        color: #1a120b;
-        background-color: #ff9bd2;
-      }
-    }
-  }
-</style>
+  </style>
+</header>

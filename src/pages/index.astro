@@ -1,7 +1,11 @@
 ---
+import { getCollection } from "astro:content";
 import BaseHead from "../components/BaseHead.astro"
+import Demos from "../components/Demos.astro"
 import Header from "../components/Header.astro"
 import { SITE } from "../consts"
+
+
 ---
 
 <!doctype html>
@@ -11,15 +15,24 @@ import { SITE } from "../consts"
   </head>
   <body>
     <Header />
-    <hr />
-    <main></main>
-    <style>
+    <!-- <div class="container"> -->
+      <hr />
+    <!-- </div> -->
+    <main>
+      <Demos />
+    </main>
+    <style lang="scss">
       hr {
         border-width: 5px;
         border: none;
         height: 1px;
-        width: 100%;
-        background-color: color-mix(in srgb, #ff9bd2, transparent 50%);
+        /* width: 60%; */
+        margin: 40px 0 80px;
+        background-color: color-mix(in srgb, var(--text-color), transparent 80%);
+      }
+
+      main {
+        padding-bottom: 100px;
       }
       /*  */
     </style>

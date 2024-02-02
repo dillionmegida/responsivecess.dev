@@ -15,8 +15,11 @@
     "@astrojs/partytown": "^2.0.4",
     "@astrojs/rss": "^4.0.4",
     "@astrojs/sitemap": "^3.0.5",
+    "@rollup/rollup-linux-x64-gnu": "^4.9.6",
     "astro": "^4.2.8",
-    "typescript": "^5.3.3",
-    "@rollup/rollup-linux-x64-gnu": "^4.9.6"
+    "install": "^0.13.0",
+    "npm": "^10.4.0",
+    "sass": "^1.70.0",
+    "typescript": "^5.3.3"
   }
 }

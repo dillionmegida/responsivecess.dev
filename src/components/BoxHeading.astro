@@ -1,0 +1,78 @@
+---
+type Props = {
+  elem: string
+  text: string
+}
+
+const { elem, text }: Props = Astro.props
+
+const Elem = elem
+const sizeClasses: {[x in string]: string} = {
+  h1: "xxl",
+  h2: "xl",
+}
+---
+
+<Elem class:list={["box-heading", sizeClasses[elem]]}>
+  <span></span>
+  <span></span>
+  {text}
+</Elem>
+
+<style lang="scss">
+  .box-heading {
+    color: var(--secondary-color);
+    font-size: clamp(var(--min-size), 7vw, var(--max-size));
+    position: relative;
+    display: inline-block;
+    border: 1px solid currentColor;
+    padding: 20px;
+
+    &.xxl {
+      --min-size: 2rem;
+      --max-size: 5rem;
+    }
+
+    &.xl {
+      --min-size: 1.8rem;
+      --max-size: 3rem;
+    }
+
+    span {
+      --offset: -4px;
+      color: inherit;
+      display: block;
+      font-size: inherit;
+      padding: 0.15em;
+
+      &::before,
+      &::after {
+        position: absolute;
+        content: "";
+        width: 8px;
+        height: 8px;
+        background-color: currentColor;
+      }
+
+      &:nth-child(1)::before {
+        left: var(--offset);
+        top: var(--offset);
+      }
+
+      &:nth-child(1)::after {
+        right: var(--offset);
+        top: var(--offset);
+      }
+
+      &:nth-child(2)::before {
+        left: var(--offset);
+        bottom: var(--offset);
+      }
+
+      &:nth-child(2)::after {
+        right: var(--offset);
+        bottom: var(--offset);
+      }
+    }
+  }
+</style>

@@ -18,15 +18,14 @@ if (newTab) {
   attr.rel = "noopener noreferrer"
 }
 
-const icon = "twitter"
+const icon = href.startsWith("https") ? "twitter" : null
 ---
 
-<a {...attr}> <Icon type="x" size={15} /> <slot /></a>
+<a {...attr}> {icon && <Icon type="x" size={15} />} <slot /></a>
 
 <style>
   a {
-    display: flex;
-    align-items: center;
-    gap: 2px;
+   /* color: inherit;
+   background-color: inherit; */
   }
 </style>

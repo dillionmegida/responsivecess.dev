@@ -1,0 +1,11 @@
+---
+const { id } = Astro.props
+---
+
+<iframe
+  id="ytplayer"
+  src={`https://www.youtube.com/embed/${id}`}
+  frameborder="0"
+  style="width: 100%; aspect-ratio: 1920 / 1080;"
+>
+</iframe>
