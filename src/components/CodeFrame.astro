@@ -1,0 +1,71 @@
+---
+const { html, css } = Astro.props
+---
+
+<div class="iframe-wrapper">
+  <iframe
+    style="resize: horizontal; height: 300px; border: 2px solid var(--text-color);"
+    srcdoc={`
+    <body id="body">
+      <div id="viewport-info" class="viewport-info">
+        1000px / 300px
+      </div>
+      <div class="content">
+        ${html}
+      </div>
+      <style>
+        body {
+          padding: 0;
+          margin: 0;
+          font-family: "Roboto";
+        }
+
+        * {
+          color: white;
+          margin: 0;
+          padding: 0;
+        }
+
+        .viewport-info {
+          padding: 10px;
+          background-color: color-mix(in srgb, white, transparent 80%);
+          text-align: right;
+        }
+        .content {
+          padding: 10px;
+        }
+        ${css}  
+        </style>
+        <script>
+          const body = document.getElementById('body');
+          const viewportInfo = document.getElementById('viewport-info')
+
+          function iframeDimensions() {
+            if (body && viewportInfo) {
+              const positionInfo = body.getBoundingClientRect();
+              const height = positionInfo.height;
+              const width = positionInfo.width;
+              viewportInfo.innerHTML = 'w - ' + Math.round(width) + 'px' + ' / h - 300px'
+            }
+          }
+
+          window.addEventListener('load', iframeDimensions)
+          window.addEventListener('resize', iframeDimensions)
+        </script>
+    </body>
+  `}></iframe>
+</div>
+
+<style>
+  /* .iframe-wrapper {
+    position: relative;
+    width: max-content;
+
+    &::after {
+      content: "< resize";
+      position: absolute;
+      bottom: 50px;
+      right: 10px;
+    }
+  } */
+</style>

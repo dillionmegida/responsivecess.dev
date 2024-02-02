@@ -1,19 +1,23 @@
-import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
-import partytown from '@astrojs/partytown'
+import { defineConfig } from "astro/config"
+import mdx from "@astrojs/mdx"
+import partytown from "@astrojs/partytown"
 
-import sitemap from '@astrojs/sitemap';
+import sitemap from "@astrojs/sitemap"
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://responsivecss.dev',
+  site: "https://responsivecss.dev",
+  markdown: {
+    syntaxHighlight: "prism",
+  },
   integrations: [
-		mdx(), 
-		sitemap(),
-		partytown({
-			config: {
-			  forward: ["dataLayer.push"],
-			},
-		}),
-	],
-});
+    mdx(),
+    sitemap(),
+
+    partytown({
+      config: {
+        forward: ["dataLayer.push"],
+      },
+    }),
+  ],
+})

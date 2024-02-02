@@ -17,6 +17,7 @@
   --primary-color-dark: #1a120b;
   --secondary-color: #ff9bd2;
   --text-color: #d5cea3;
+  --text-color: #cccab7;
   --primary-color: #3c2a21;
 }
 @font-face {
@@ -62,7 +63,17 @@ a {
   text-decoration: none;
 }
 
+h1, h2, h3 {
+  scroll-margin-top: 30px;
+}
+
 p,
 span {
   color: var(--text-color);
+}
+
+ul, li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }

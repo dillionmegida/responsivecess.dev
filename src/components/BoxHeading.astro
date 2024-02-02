@@ -2,18 +2,19 @@
 type Props = {
   elem: string
   text: string
+  id?: string
 }
 
-const { elem, text }: Props = Astro.props
+const { elem, text, id }: Props = Astro.props
 
-const Elem = elem
-const sizeClasses: {[x in string]: string} = {
+const Elem = elem as any
+const sizeClasses: { [x in string]: string } = {
   h1: "xxl",
   h2: "xl",
 }
 ---
 
-<Elem class:list={["box-heading", sizeClasses[elem]]}>
+<Elem id={id} class:list={["box-heading", sizeClasses[elem]]}>
   <span></span>
   <span></span>
   {text}

@@ -1,10 +1,120 @@
 ---
-title: 'Fluid Typography with clamp function'
-description: 'How to achieve easy responsive typography without any media queries'
-pubDate: 'Feb 02 2024'
-heroImage: '/demos/fluid-typography.png'
+title: "Fluid Typography with clamp function"
+description: "How to achieve easy responsive typography without any media queries"
+pubDate: "Feb 02 2024"
+heroImage: "/demos/fluid-typography.png"
 ---
 
-import YouTube from '../../components/YouTube.astro'
+import CodeFrame from "../../components/CodeFrame.astro"
 
-<YouTube id='JXlMu3w9_eM' />
+```css
+element {
+  font-size: clamp(min, preferred, max);
+}
+```
+
+This function allows you to create fluid responsive typography without any media queries. You can watch the YouTube tutorial below or the writter version after it.
+
+import YouTube from "../../components/YouTube.astro"
+
+<YouTube id="JXlMu3w9_eM" />
+
+When working with texts, you might want different `font-size`s for different screens. A good solution might be media queries:
+
+```css
+element {
+  font-size: 3rem;
+}
+
+@media (max-width: 1000px) {
+  font-size: 2rem;
+}
+```
+
+What happens if you need to target more screen sizes? Now you need more media queries:
+
+```css
+element {
+  font-size: 3rem;
+}
+
+@media (max-width: 1000px) {
+  font-size: 2rem;
+}
+
+@media (max-width: 800px) {
+  font-size: 1.5rem;
+}
+
+@media (max-width: 500px) {
+  font-size: 1rem;
+}
+```
+
+Instead of managing multiple breakpoints with media queries, you can use **fluid typography**. Fluid Typography refers to typography that scales as the screen size changes. To achieve this, you can use viewport units:
+
+```css
+element {
+  font-size: 10vw;
+}
+```
+
+We have the `font-size` as "10% of the viewport width". When the viewport is 1000px, the `font-size` is **100px**. When the viewport is 50px, the `font-size` is **5px**.
+
+Try resizing the iframe below and see how the paragraph scales:
+
+```html
+<p>Some text</p>
+```
+
+```css
+p {
+  font-size: 10vw;
+}
+```
+
+<CodeFrame
+  html={`<p>Some text</p>`}
+  css={`
+    p {
+      font-size: 10vw;
+    }
+  `}
+/>
+
+This is fluid typography. But there's a problem. Because we do not have a minimum and a maximum in the fluidness. So when the iframe is large, the text is large, and when the iframe is very small, the text is also very small. This is where `clamp` comes in.
+
+With clamp, we have same fluid typography, but with a boundary--the minimum and maximum value:
+
+```css
+p {
+  font-size: clamp(2rem, 10vw, 5rem);
+}
+```
+
+Now try resizing the iframe horizontally again:
+
+<CodeFrame
+  html={`<p>Some text</p>`}
+  css={`
+    p {
+      font-size: clamp(2rem, 10vw, 5rem);
+    }
+  `}
+/>
+
+What you notice is that, if the viewport width goes smaller, the text never gets less than `2rem`. And if the viewport width goes wider, the text never goes beyond `5rem`. With `clamp`, we have created boundaries for the fluid font-size.
+
+If you go back to observe the iframe, you'd see that the font-size stops reducing at **320px** and it stops increasing at **800px**. Let's do some calculation to explain these numbers.
+
+Let's say we have a base of **16px** for **1rem**. That means, **2rem** is **32px** and **5rem** is **80px**.
+
+The preferred size we have in the `clamp` function is **10vw**. When the viewport width is **800px**, **10vw** translates to **80px**, which is the `max` in our `clamp`. This means that when the viewport width becomes **801px** or more, our `font-size` stays clamped at **80px**, which is **5rem**.
+
+The same idea applies to when the viewport width is **320px**. At this point, **10vw** translates to **32px**, which is the `min` in our `clamp`. Therefore, when the viewport width becomes **319px** or less, our `font-size` stays clamped at **32px**, which is **2rem**.
+
+Hope this calculation helps? 😅
+
+---
+
+This is how the `clamp` function allows us to create fluid typography with boundaries.
