@@ -6,6 +6,7 @@ heroImage: "/demos/fluid-typography.png"
 ---
 
 import CodeFrame from "../../components/CodeFrame.astro"
+import Info from "../../components/mdx/Info.astro"
 
 ```css
 element {
@@ -82,7 +83,7 @@ p {
   `}
 />
 
-This is fluid typography. But there's a problem. Because we do not have a minimum and a maximum in the fluidness. So when the iframe is large, the text is large, and when the iframe is very small, the text is also very small. This is where `clamp` comes in.
+This is fluid typography. As the screen goes wider, the `font-size` grows. And vice versa for when the width gets smaller. But there's a problem. Because we do not have a minimum and a maximum in the fluidness. So when the iframe is large, the text is large, and when the iframe is very small, the text is also very small. This is where `clamp` comes in.
 
 With clamp, we have same fluid typography, but with a boundary--the minimum and maximum value:
 

@@ -1,14 +1,38 @@
 ---
+import Info from './mdx/Info.astro'
+
 const { html, css } = Astro.props
+
 ---
 
-<div class="iframe-wrapper">
+<div class="frame">
+  <!-- <style
+    set:html={`
+      @scope {
+        * {
+          margin: 0 !important;
+        }
+
+        ${css}
+      }
+    `}
+  />
+  <div set:html={html} /> -->
   <iframe
+    title="Code frame"
+    id="code-frame"
     style="resize: horizontal; height: 300px; border: 2px solid var(--text-color);"
     srcdoc={`
     <body id="body">
       <div id="viewport-info" class="viewport-info">
-        1000px / 300px
+        <!-- <div class="actions">
+          <button id="decrease-width">w-</button>
+          <button id="increase-width">w+</button>
+        </div> -->
+        <span class="dimensions">
+          1000px / 300px
+        </span>
+        
       </div>
       <div class="content">
         ${html}
@@ -28,9 +52,27 @@ const { html, css } = Astro.props
 
         .viewport-info {
           padding: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
           background-color: color-mix(in srgb, white, transparent 80%);
-          text-align: right;
         }
+
+        .actions button {
+          width: 35px;
+          background-color: #3c2a21;
+          padding: 5px;
+          border: none;
+          cursor: pointer;
+          border: 2px solid transparent;
+        }
+
+        .actions button:hover {
+          background-color: white;
+          color: #3c2a21;
+          border-color: #3c2a21;
+        }
+
         .content {
           padding: 10px;
         }
@@ -38,25 +80,47 @@ const { html, css } = Astro.props
         </style>
         <script>
           const body = document.getElementById('body');
-          const viewportInfo = document.getElementById('viewport-info')
+          const dimensions = document.querySelector('.dimensions')
+          const increaseWidth = document.getElementById('increase-width')
+          const decreaseWidth = document.getElementById('decrease-width')
+
+          console.log(increaseWidth)
 
           function iframeDimensions() {
-            if (body && viewportInfo) {
+            if (body && dimensions) {
               const positionInfo = body.getBoundingClientRect();
               const height = positionInfo.height;
               const width = positionInfo.width;
-              viewportInfo.innerHTML = 'w - ' + Math.round(width) + 'px' + ' / h - 300px'
+              dimensions.innerHTML = 'w - ' + Math.round(width) + 'px' + ' / h - 300px'
             }
           }
 
           window.addEventListener('load', iframeDimensions)
           window.addEventListener('resize', iframeDimensions)
+
+          // function modifyWidth(type) {
+          //   const positionInfo = body.getBoundingClientRect();
+          //   if(type === 'increase') 
+          //     window.frameElement.width =  positionInfo.width + 50;
+          //   else window.frameElement.width =  positionInfo.width - 50;
+          // }
+
+          // increaseWidth?.addEventListener('click', () => modifyWidth('increase'))
+          // decreaseWidth?.addEventListener('click', () => modifyWidth('decrease'))
         </script>
     </body>
   `}></iframe>
+  <br/>
+  <Info>Resizing is only possible on a desktop for now 🥲</Info>
 </div>
-
+<!-- 
 <style>
+  .frame {
+    width: 300px;
+    resize: horizontal;
+    border: 1px solid var(--text-color);
+    padding: 10px;
+  }
   /* .iframe-wrapper {
     position: relative;
     width: max-content;
@@ -68,4 +132,4 @@ const { html, css } = Astro.props
       right: 10px;
     }
   } */
-</style>
+</style> -->
