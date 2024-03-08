@@ -6,7 +6,7 @@ import BaseDocument from "../components/BaseDocument.astro"
 
 type Props = CollectionEntry<"demo">["data"]
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props
+const { title, description, heroImage } = Astro.props
 ---
 
 <BaseDocument title={title} description={description} image={heroImage}>
@@ -22,8 +22,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
         <div class="content">
           <slot />
         </div>
-        <br />
-        <br />
+        <hr />
         <div>
           <Link className="home-link" href="/#demos">More Demos</Link>
         </div>
@@ -69,17 +68,52 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
         margin-bottom: 20px;
       }
 
+      hr {
+        border-color: color-mix(in srgb, var(--text-color), transparent 60%);
+        width: 50%;
+        margin: 50px 0;
+      }
+
       .content {
         font-size: clamp(1rem, 7vw, 1.4rem);
+
+        a {
+          color: var(--secondary-color);
+          position: relative;
+
+          &::before {
+            content: "";
+            width: 100%;
+            position: absolute;
+            background-color: var(--primary-color);
+            height: 2px;
+            left: 0;
+            bottom: 0;
+            border-radius: 10px;
+          }
+
+          &::after {
+            content: "";
+            width: 100%;
+            position: absolute;
+            background-color: var(--secondary-color);
+            height: 2px;
+            left: 0;
+            bottom: 0;
+            border-radius: 10px;
+            transform-origin: left;
+            transform: scaleX(0);
+            transition: transform 300ms;
+          }
+
+          &:hover::after {
+            transform: scaleX(1);
+          }
+        }
 
         p {
           margin: 20px 0;
           line-height: 1.4;
-        }
-
-        hr {
-          border-color: color-mix(in srgb, var(--text-color), transparent 60%);
-          margin: 50px 0;
         }
 
         code:not([class]) {

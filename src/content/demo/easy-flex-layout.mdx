@@ -7,6 +7,8 @@ heroImage: '/demos/easy-flex.png'
 
 import YouTube from '../../components/YouTube.astro'
 import CodeFrame from "../../components/CodeFrame.astro"
+import CodeBlock from "../../components/mdx/CodeBlock.astro"
+import Info from "../../components/mdx/Info.astro"
 
 ```css
 parent {
@@ -21,3 +23,162 @@ child {
 ```
 
 <YouTube id='9U5ZDspqhwE' />
+
+With `flex` in CSS, you can create flexible containers and these kind of containers help a lot with responsiveness. For example:
+
+```html
+<div class='flex'>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+</div>
+```
+
+```css
+.flex {
+  display: flex;
+  gap: 20px;
+}
+.child {
+  width: 100px;
+  height: 100px;
+  background-color: lightgreen;
+}
+```
+
+<CodeBlock html={`
+  <div class='flex'>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+  </div>
+`} css={`
+  .flex {
+    display: flex;
+    gap: 20px;
+  }
+  .child {
+    width: 100px;
+    height: 100px;
+    background-color: lightgreen;
+  }
+`} />
+
+<Info>Try resizing the container to see the flexible sizes.</Info>
+
+When you resize the container--reducing the width--you notice that the boxes becomes smaller in size. If you want to keep the sizes of the boxes, then you can use a `flex-wrap: wrap`:
+
+```css
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+```
+
+<CodeBlock html={`
+  <div class='flex'>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+  </div>
+`} css={`
+  .flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .child {
+    width: 100px;
+    height: 100px;
+    background-color: lightgreen;
+  }
+`} />
+
+One thing you'd notice now is that there's some space between the boxes and the edge on the right. And when the boxes wrap to the next line, you still see that space between the edges and the edge.
+
+One solution to this is a `flex-grow: 1` on the boxes:
+
+```css
+.child {
+  width: 100px;
+  height: 100px;
+  flex-grow: 1;
+  background-color: lightgreen;
+}
+```
+
+<CodeBlock html={`
+  <div class='flex'>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+  </div>
+`} css={`
+  .flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .child {
+    width: 200px;
+    flex-grow: 1;
+    height: 100px;
+    background-color: lightgreen;
+  }
+`} />
+
+In place of `width`, you can also use `flex-basis` which works very well in flex containers with `flex-grow` and `flex-shrink`:
+
+```css
+.child {
+  flex-basis: 100px;
+  height: 100px;
+  flex-grow: 1;
+  background-color: lightgreen;
+}
+```
+
+<CodeBlock html={`
+  <div class='flex'>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+    <div class='child'></div>
+  </div>
+`} css={`
+  .flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .child {
+    flex-grow: 1;
+    flex-basis: 200px;
+    height: 100px;
+    background-color: lightgreen;
+  }
+`} />
+
+`flex-basis` works similarly with `width` (dependind on the context). You can learn more about this property is this 1min video: [flex-basis vs width](https://youtube.com/shorts/c7QaUpZOiOg).
+
+Here, we have a simple responsive layout with `flex` with no spaces at the edge, and each item resizing accordinly as the container reduces.
