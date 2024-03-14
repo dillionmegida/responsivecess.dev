@@ -77,6 +77,27 @@ const { title, description, heroImage } = Astro.props
       .content {
         font-size: clamp(1rem, 7vw, 1.4rem);
 
+        pre:not(code :not([class])) {
+          border: 2px solid rgba(255, 255, 255, 0.108);
+        }
+
+        pre code:not([class]) {
+          display: block;
+          padding: 20px;
+          font-size: calc(100% - 4px);
+          background-color: color-mix(
+            in srgb,
+            var(--primary-color-dark),
+            transparent 30%
+          );
+
+          & > span {
+            width: 100%;
+            display: block;
+            line-height: 0.3;
+          }
+        }
+
         a {
           color: var(--secondary-color);
           position: relative;
@@ -124,10 +145,6 @@ const { title, description, heroImage } = Astro.props
             transparent 30%
           );
           padding: 3px;
-        }
-
-        pre[class] {
-          margin-bottom: 30px;
         }
       }
     </style>

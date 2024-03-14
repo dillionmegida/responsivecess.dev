@@ -6,6 +6,8 @@ heroImage: '/demos/easy-grid.png'
 ---
 
 import YouTube from '../../components/YouTube.astro'
+import CodeBlock from "../../components/mdx/CodeBlock.astro"
+
 
 ```css
 parent {
@@ -15,3 +17,189 @@ parent {
 ```
 
 <YouTube id='zI7xLUE4Sco' />
+
+With `grid` in CSS, you can create containers with contents that can scale to fit the different grid boxes. These boxes are defined by rows and columns. For example:
+
+{/* ```html
+<div class='grid'>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+</div>
+```
+
+```css
+.grid {
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  gap: 20px;
+}
+.child {
+  height: 100px;
+  background-color: lightgreen;
+}
+``` */}
+
+<CodeBlock showHTML html={`
+  <div class='grid'>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+</div>
+`} css={`
+  .grid {
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  gap: 20px;
+}
+.child {
+  height: 100px;
+  background-color: lightgreen;
+}
+`} />
+
+Here, we defined the grid container to have three columns each with `100px`. We have 7 `div` elements, and the grid container automically creates the rows needed to fit all these children.
+
+But there's a lot of space left on the right side of the container 🤔 We can define the `grid` container to create columns of equal width that would fill up all the container using [fraction units](https://css-tricks.com/introduction-fr-css-unit/):
+
+
+<CodeBlock html={`
+  <div class='grid'>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+</div>
+`} css={`
+  .grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+.child {
+  height: 100px;
+  background-color: lightgreen;
+}
+`} />
+
+By defining the columns with `1fr 1fr 1fr`, we're saying each column should have one fraction over the total columns, which means `1/3`. With each column having `1/3`, they would all have equal widths.
+
+Now we have the container being filled with 3 equal sized columns and the required rows automatically created by the grid container.
+
+Instead of having `1fr 1fr 1fr`, we could also do `repeat(3, 1fr)` instead:
+
+```css
+.grid {
+  /* ... */
+  grid-template-columns: repeat(3, 1fr);
+}
+```
+
+But there's a problem with this: what if we wanted the number of columns to be automatically calculated? Keeping it at 3 is fine for desktop screens, but when the screen gets smaller, then we need media queries. 
+
+Maybe a media query for 2 columns and then another for 1 column.
+
+But we can actually tell the grid container to automatically calculate the number of columns needed based on some dimension requirements without media queries. This is where we use `auto-fit` and `minmax`.
+
+With `auto-fit`, we tell the grid container "based on this criteria, fit the most number of columns possible":
+
+<CodeBlock html={`
+  <div class='grid'>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+</div>
+`} css={`
+  .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 100px);
+  gap: 20px;
+}
+.child {
+  height: 100px;
+  background-color: lightgreen;
+}
+`} />
+
+Here, we say `repeat(auto-fit, 100px)`. The criteria here is "100px width". 
+
+Try resizing the container and you would notice the grid container automatically creating the number of columns needed. This is similar to `flex-wrap: wrap`.
+
+You're probably thinking: why can't we do `repeat(auto-fit, 1fr)`? Well, let's see:
+
+<CodeBlock html={`
+  <div class='grid'>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+</div>
+`} css={`
+  .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 1fr);
+  gap: 20px;
+}
+.child {
+  height: 100px;
+  background-color: lightgreen;
+}
+`} />
+
+As you can see, we have only one column. That's because, `1fr` is not exactly a criteria. It's like saying **1 / 1**, so you're essentially saying "1 column that is 100%". This is where we can introduce `minmax`.
+
+The `minmax` function allows you to specify a minimum and maximum range. Creating a range like `minmax(10px, 20px)` doesn't make sense, because **10px** will never be **20px** and vice versa.
+
+This function is often used with one value as a relative unit such as `minmax(10%, 20px)`. In this case, at some point, **10%** as a relative unit can be more than than **20px** and at that point, **20px** would be used.
+
+The other way around with `minmax(200px, 10vw)`. In this case, at some point, **10vw** can be less than **200px** and at that point, **200px** would be used.
+
+We can use `minmax` in our grid to define a criteria for `auto-fit`:
+
+<CodeBlock html={`
+  <div class='grid'>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+  <div class='child'></div>
+</div>
+`} css={`
+  .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 20px;
+}
+.child {
+  height: 100px;
+  background-color: lightgreen;
+}
+`} />
+
+When you resize the container, what you notice is that the grid container creates the number of columns required for the criteria we set. What's the criteria:
+
+Minimum 100px, maximum 1fr. If `1fr` is less than 200px, stay at 200px. If the container can container 7 200px columns, then it should.
+
+When you reduce the width of the container, the columns never goes below **200px**, even when you have just one column. Also, when you increase the width of the container, the columns increase because the grid container can continue multiple columns with at least 200px.
+
+You can make the minimum value in the `minmax` anything you want depending on what you're building, but the **1fr** ensures that the columns fill up the space in the container.

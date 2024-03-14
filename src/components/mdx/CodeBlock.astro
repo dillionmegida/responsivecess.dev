@@ -1,5 +1,6 @@
 ---
-const { html, css } = Astro.props
+import { Code } from "astro:components"
+const { html, showHTML = false, css, showCSS = true } = Astro.props
 
 function makeid(length: number) {
   let result = ""
@@ -16,6 +17,16 @@ function makeid(length: number) {
 
 const id = makeid(10)
 ---
+
+<details open={showHTML && html}>
+  <summary>HTML</summary>
+  <Code code={html.trim()} lang="html" theme="dark-plus" />
+</details>
+
+<details open={showCSS && css}>
+  <summary>CSS</summary>
+  <Code code={css.trim()} lang="css" theme="dark-plus" />
+</details>
 
 <div id={id}>
   <div
@@ -44,3 +55,33 @@ const id = makeid(10)
   const shadow = host.attachShadow({ mode: "open" })
   shadow.appendChild(block)
 </script>
+
+<style lang="scss">
+  details {
+    margin-bottom: 10px;
+    summary {
+      background-color: color-mix(
+        in srgb,
+        var(--primary-color-dark),
+        transparent 30%
+      );
+      border: 2px solid rgba(255, 255, 255, 0.108);
+      border-bottom: none;
+      cursor: pointer;
+      padding: 10px 15px;
+      color: var(--text-color);
+      font-size: 0.6em;
+      transition: background-color 300ms;
+
+      &::marker {
+        content: "";
+      }
+    }
+
+    &[open] summary,
+    summary:hover {
+      background-color: rgb(207, 207, 207);
+      color: var(--primary-color-dark);
+    }
+  }
+</style>
