@@ -28,6 +28,14 @@ const id = makeid(10)
   <Code code={css.trim()} lang="css" theme="dark-plus" />
 </details>
 
+<div id={`viewport-info-${id}`} class="viewport-info">
+  <div class="actions">
+    <button class={`decrease-width`}>w-</button>
+    <button class="increase-width">w+</button>
+  </div>
+  <span class="dimensions"> ...</span>
+</div>
+
 <div id={id}>
   <div
     class="block"
@@ -54,6 +62,40 @@ const id = makeid(10)
 
   const shadow = host.attachShadow({ mode: "open" })
   shadow.appendChild(block)
+
+  const hostShadowRoot = host.shadowRoot.querySelector(".block")
+
+  const viewportInfo = document.getElementById(`viewport-info-${id}`)
+  const dimensions = viewportInfo.querySelector(".dimensions")
+  const increaseWidth = viewportInfo.querySelector(`.increase-width`)
+  const decreaseWidth = viewportInfo.querySelector(`.decrease-width`)
+
+  function viewportInfoDimensions() {
+    if (hostShadowRoot && dimensions) {
+      const positionInfo = hostShadowRoot.getBoundingClientRect()
+      const height = positionInfo.height
+      const width = positionInfo.width
+
+      dimensions.innerHTML =
+        Math.round(width) + "px" + " / " + Math.round(height) + "px"
+    }
+  }
+
+  new ResizeObserver(viewportInfoDimensions).observe(block)
+
+  window.addEventListener("load", viewportInfoDimensions)
+
+  function modifyWidth(type) {
+    const positionInfo = hostShadowRoot.getBoundingClientRect()
+    const ADDITION = 100
+
+    if (type === "increase")
+      hostShadowRoot.style.width = positionInfo.width + ADDITION + "px"
+    else hostShadowRoot.style.width = positionInfo.width - ADDITION + "px"
+  }
+
+  increaseWidth?.addEventListener("click", () => modifyWidth("increase"))
+  decreaseWidth?.addEventListener("click", () => modifyWidth("decrease"))
 </script>
 
 <style lang="scss">
@@ -82,6 +124,34 @@ const id = makeid(10)
     summary:hover {
       background-color: rgb(207, 207, 207);
       color: var(--primary-color-dark);
+    }
+  }
+
+  .viewport-info {
+    background-color: white;
+    text-align: right;
+    font-size: 0.8em;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: color-mix(in srgb, white, transparent 80%);
+
+    .actions button {
+      width: 35px;
+      background-color: var(--primary-color);
+      padding: 5px;
+      border: none;
+      cursor: pointer;
+      border: 2px solid transparent;
+      color: white;
+    }
+
+    .actions button:hover {
+      background-color: white;
+      color: var(--primary-color);
+      border-color: var(--primary-color);
     }
   }
 </style>
