@@ -13,6 +13,8 @@ import Info from "../../components/mdx/Info.astro"
   <img src="https://responsivecss.dev/cover.png" />
 </div>
 `} />
+<Info>Scroll in the container to see the rest of the image.</Info>
+
 
 When you use an `img` tag with an image, the browser uses the dimensions of the image to determine how much space the image would occupy. In the case of the image above, it occupies **1920px** `width` and **1080px** `height`. This also causes an overflow as the container for the image doesn't have the needed space.
 
@@ -102,15 +104,17 @@ Also if you defined a `height` but didn't define a `width`, the browser calculat
 Let's see a quick example:
 
 <CodeBlock showHTML html={`
-  <div></div>
+  <span></span>
 `} css={`
-  div {
+  span {
+  display: block;
   aspect-ratio: 2 / 1;
   background-color: white;
   max-width: 200px;
   width: 100%;
 }
 `}/>
+
 
 Here, we say the `div` should have an `aspect-ratio` of **2 / 1**. This means "the width of the box should be twice the height". Then we specify a `max-width` of **200px** and a `width` of **100%** so this way the box occupies all the space available but never exceeds the maximum width.
 

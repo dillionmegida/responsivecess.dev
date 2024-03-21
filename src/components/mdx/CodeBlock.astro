@@ -3,152 +3,153 @@ import { Code } from "astro:components"
 const { html, showHTML = false, css, showCSS = true } = Astro.props
 
 function makeid(length: number) {
-  let result = ""
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-  const charactersLength = characters.length
-  let counter = 0
-  while (counter < length) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength))
-    counter += 1
-  }
-  return result
+	let result = ""
+	const characters =
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+	const charactersLength = characters.length
+	let counter = 0
+	while (counter < length) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength))
+		counter += 1
+	}
+	return result
 }
 
 const id = makeid(10)
 ---
 
 <details open={showHTML && html}>
-  <summary>HTML</summary>
-  <Code code={html.trim()} lang="html" theme="dark-plus" />
+	<summary>HTML</summary>
+	<Code code={html.trim()} lang="html" theme="dark-plus" />
 </details>
 
 {
-  css && (
-    <details open={showCSS && css}>
-      <summary>CSS</summary>
-      <Code code={css.trim()} lang="css" theme="dark-plus" />
-    </details>
-  )
+	css && (
+		<details open={showCSS && css}>
+			<summary>CSS</summary>
+			<Code code={css.trim()} lang="css" theme="dark-plus" />
+		</details>
+	)
 }
 
 <div id={`viewport-info-${id}`} class="viewport-info">
-  <div class="actions">
-    <button class={`decrease-width`}>w-</button>
-    <button class="increase-width">w+</button>
-  </div>
-  <span class="dimensions"> ...</span>
+	<div class="actions">
+		<button class={`decrease-width`}>w-</button>
+		<button class="increase-width">w+</button>
+	</div>
+	<span class="dimensions"> ...</span>
 </div>
 
-<div style="border: 2px solid rgb(225, 255, 0); padding: 20px; resize: horizontal;  overflow: hidden;" id={id}>
-  <div
-    class="block"
-    set:html={`
-    ${html}
+<div style="width: 100%" id={id}>
+	<div
+		style="border: 2px solid rgb(225, 255, 0); padding: 20px; resize: horizontal;  overflow: auto;"
+		class="block"
+		set:html={`
+      ${html}
   
-    <style>
-      ${css}
-    </style>
-  `}
-  />
+      <style>
+        ${css}
+      </style>
+    `}
+	/>
 </div>
 
 <script is:inline define:vars={{ id }}>
-  const host = document.getElementById(id)
-  const block = host.querySelector(".block")
+	const host = document.getElementById(id)
+	const block = host.querySelector(".block")
 
-  const shadow = host.attachShadow({ mode: "open" })
-  shadow.appendChild(block)
+	const shadow = host.attachShadow({ mode: "open" })
+	shadow.appendChild(block)
 
-  const hostShadowRoot = host.shadowRoot.querySelector(".block")
+	const hostShadowRoot = host.shadowRoot.querySelector(".block")
 
-  const viewportInfo = document.getElementById(`viewport-info-${id}`)
-  const dimensions = viewportInfo.querySelector(".dimensions")
-  const increaseWidth = viewportInfo.querySelector(`.increase-width`)
-  const decreaseWidth = viewportInfo.querySelector(`.decrease-width`)
+	const viewportInfo = document.getElementById(`viewport-info-${id}`)
+	const dimensions = viewportInfo.querySelector(".dimensions")
+	const increaseWidth = viewportInfo.querySelector(`.increase-width`)
+	const decreaseWidth = viewportInfo.querySelector(`.decrease-width`)
 
-  function viewportInfoDimensions() {
-    if (hostShadowRoot && dimensions) {
-      const positionInfo = hostShadowRoot.getBoundingClientRect()
-      const height = positionInfo.height
-      const width = positionInfo.width
+	function viewportInfoDimensions() {
+		if (hostShadowRoot && dimensions) {
+			const positionInfo = hostShadowRoot.getBoundingClientRect()
+			const height = positionInfo.height
+			const width = positionInfo.width
 
-      dimensions.innerHTML =
-        Math.round(width) + "px" + " / " + Math.round(height) + "px"
-    }
-  }
+			dimensions.innerHTML =
+				Math.round(width) + "px" + " / " + Math.round(height) + "px"
+		}
+	}
 
-  new ResizeObserver(viewportInfoDimensions).observe(block)
+	new ResizeObserver(viewportInfoDimensions).observe(block)
 
-  window.addEventListener("load", viewportInfoDimensions)
+	window.addEventListener("load", viewportInfoDimensions)
 
-  function modifyWidth(type) {
-    const positionInfo = hostShadowRoot.getBoundingClientRect()
-    const ADDITION = 100
+	function modifyWidth(type) {
+		const positionInfo = hostShadowRoot.getBoundingClientRect()
+		const ADDITION = 100
 
-    if (type === "increase")
-      hostShadowRoot.style.width = positionInfo.width + ADDITION + "px"
-    else hostShadowRoot.style.width = positionInfo.width - ADDITION + "px"
-  }
+		if (type === "increase")
+			hostShadowRoot.style.width = positionInfo.width + ADDITION + "px"
+		else hostShadowRoot.style.width = positionInfo.width - ADDITION + "px"
+	}
 
-  increaseWidth?.addEventListener("click", () => modifyWidth("increase"))
-  decreaseWidth?.addEventListener("click", () => modifyWidth("decrease"))
+	increaseWidth?.addEventListener("click", () => modifyWidth("increase"))
+	decreaseWidth?.addEventListener("click", () => modifyWidth("decrease"))
 </script>
 
 <style lang="scss">
-  details {
-    margin-bottom: 10px;
-    summary {
-      background-color: color-mix(
-        in srgb,
-        var(--primary-color-dark),
-        transparent 30%
-      );
-      border: 2px solid rgba(255, 255, 255, 0.108);
-      border-bottom: none;
-      cursor: pointer;
-      padding: 10px 15px;
-      color: var(--text-color);
-      font-size: 0.6em;
-      transition: background-color 300ms;
+	details {
+		margin-bottom: 10px;
+		summary {
+			background-color: color-mix(
+				in srgb,
+				var(--primary-color-dark),
+				transparent 30%
+			);
+			border: 2px solid rgba(255, 255, 255, 0.108);
+			border-bottom: none;
+			cursor: pointer;
+			padding: 10px 15px;
+			color: var(--text-color);
+			font-size: 0.6em;
+			transition: background-color 300ms;
 
-      &::marker {
-        content: "";
-      }
-    }
+			&::marker {
+				content: "";
+			}
+		}
 
-    &[open] summary,
-    summary:hover {
-      background-color: rgb(207, 207, 207);
-      color: var(--primary-color-dark);
-    }
-  }
+		&[open] summary,
+		summary:hover {
+			background-color: rgb(207, 207, 207);
+			color: var(--primary-color-dark);
+		}
+	}
 
-  .viewport-info {
-    background-color: white;
-    text-align: right;
-    font-size: 0.8em;
-    padding: 10px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: flex-end;
-    background-color: color-mix(in srgb, white, transparent 80%);
+	.viewport-info {
+		background-color: white;
+		text-align: right;
+		font-size: 0.8em;
+		padding: 10px;
+		display: flex;
+		gap: 10px;
+		align-items: center;
+		justify-content: flex-end;
+		background-color: color-mix(in srgb, white, transparent 80%);
 
-    .actions button {
-      width: 35px;
-      background-color: var(--primary-color);
-      padding: 5px;
-      border: none;
-      cursor: pointer;
-      border: 2px solid transparent;
-      color: white;
-    }
+		.actions button {
+			width: 35px;
+			background-color: var(--primary-color);
+			padding: 5px;
+			border: none;
+			cursor: pointer;
+			border: 2px solid transparent;
+			color: white;
+		}
 
-    .actions button:hover {
-      background-color: white;
-      color: var(--primary-color);
-      border-color: var(--primary-color);
-    }
-  }
+		.actions button:hover {
+			background-color: white;
+			color: var(--primary-color);
+			border-color: var(--primary-color);
+		}
+	}
 </style>
