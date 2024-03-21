@@ -98,6 +98,27 @@ const { title, description, heroImage } = Astro.props
           }
         }
 
+        h2 {
+          font-size: clamp(2.5rem, 7vw, 1.5rem);
+          color: yellow;
+
+        }
+
+        h3 {
+          font-size: clamp(2rem, 7vw, 1.2rem);
+
+        }
+
+        h2,
+        h3,
+        h4 {
+          width: 100%;
+          padding: 20px;
+          border: 1px solid
+            color-mix(in srgb, var(--text-color), transparent 60%);
+            margin: 1em 0 0.5em;
+        }
+
         a {
           color: var(--secondary-color);
           position: relative;
@@ -132,9 +153,19 @@ const { title, description, heroImage } = Astro.props
           }
         }
 
-        p {
-          margin: 20px 0;
+        p, ul {
           line-height: 1.4;
+          color: var(--text-color);
+        }
+        
+        p {
+
+          margin: 20px 0 10px;
+        }
+
+        ul li {
+          margin-left: 20px;
+          list-style: disc;
         }
 
         code:not([class]) {

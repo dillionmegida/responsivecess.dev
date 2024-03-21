@@ -23,10 +23,14 @@ const id = makeid(10)
   <Code code={html.trim()} lang="html" theme="dark-plus" />
 </details>
 
-<details open={showCSS && css}>
-  <summary>CSS</summary>
-  <Code code={css.trim()} lang="css" theme="dark-plus" />
-</details>
+{
+  css && (
+    <details open={showCSS && css}>
+      <summary>CSS</summary>
+      <Code code={css.trim()} lang="css" theme="dark-plus" />
+    </details>
+  )
+}
 
 <div id={`viewport-info-${id}`} class="viewport-info">
   <div class="actions">
@@ -36,7 +40,7 @@ const id = makeid(10)
   <span class="dimensions"> ...</span>
 </div>
 
-<div id={id}>
+<div style="border: 2px solid rgb(225, 255, 0); padding: 20px; resize: horizontal;  overflow: hidden;" id={id}>
   <div
     class="block"
     set:html={`
@@ -44,13 +48,6 @@ const id = makeid(10)
   
     <style>
       ${css}
-
-      .block {
-        border: 2px solid rgb(225, 255, 0);
-        resize: horizontal;
-        padding: 20px;
-        overflow: hidden;
-      }
     </style>
   `}
   />

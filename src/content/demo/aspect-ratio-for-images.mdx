@@ -1,0 +1,151 @@
+---
+title: 'Aspect Ratio for Responsive Images Without Layout Shift'
+description: 'Lorem ipsum dolor sit amet'
+pubDate: 'Mar 21 2024'
+heroImage: '/demos/aspect-ratio-responsive-image.png'
+---
+
+import CodeBlock from "../../components/mdx/CodeBlock.astro"
+import Info from "../../components/mdx/Info.astro"
+
+<CodeBlock showHTML html={`
+  <div>
+  <img src="https://responsivecss.dev/cover.png" />
+</div>
+`} />
+
+When you use an `img` tag with an image, the browser uses the dimensions of the image to determine how much space the image would occupy. In the case of the image above, it occupies **1920px** `width` and **1080px** `height`. This also causes an overflow as the container for the image doesn't have the needed space.
+
+Now we need to set a width on the image. We can use `max-width` and `width` to make the image responsive:
+
+<CodeBlock html={`
+  <div>
+  <img src="https://responsivecss.dev/cover.png" />
+</div>
+`} css={`
+  img {
+  max-width: 800px;
+  width: 100%;
+}
+`}/>
+
+<Info>Try resizing the container above, and you would see how the image is responsive on different screen widths.</Info>
+
+Here, we specify a `max-width` of **800px** with a `width` of **100%**. This way, we are saying that the width of the image should occupy as much space as provided by the container, but the image should never exceed 800px.
+
+## The problem of layout shift
+
+Although the image is responsive, we have a problem. You might not notice this on a device with fast internet connection, but with a poor connection, you would. What does the layout shift problem mean?
+
+So far, you've told the browser that the `img` should occupy "100% width with a maximum of 800px". That means, the browser would not need to wait until it gets the image to know the width information anymore.
+
+But then, you haven't told the browser how much `height` the image should occupy. This means, by default, the `height` of the image would be **0px**. Then, the browser would need to wait for the image to be fetched, and then the browser can determine how much height would be needed for the image based on the width that you have already specified. When the height goes from **0px** to whatever height the image actually requires, you experience a layout shift.
+
+To test this, you can slow down your internet connection on your browser using [Network Throttling](https://developer.mozilla.org/en-US/docs/Glossary/Network_throttling). Then try refreshing this page. You would notice that the container is smaller in height for some seconds, and then when the image is fetched, the height increases to fit the image.
+
+[Layout Shift](https://web.dev/articles/optimize-cls) is a problem you want to avoid when building web applications as it can negatively impact the experience of users.
+
+## Specifying height for images can be difficult
+
+Okay, now you know you should define a height so that the browser knows how much space an image needs. But this can be difficult. Let's say we specify a height of **500px**:
+
+<CodeBlock html={`
+  <div>
+  <img src="https://responsivecss.dev/cover.png" />
+</div>
+`} css={`
+  img {
+  max-width: 800px;
+  width: 100%;
+  height: 500px;
+}
+`}/>
+
+<Info>Try resizing the container above, and you would see how the image stays at the same height and is also distorted.</Info>
+
+The image doesn't look nice because we are stretching the image beyond the "perfect" ratio of width to height. To fix the stretching, we can use `object-fit: cover`:
+
+<CodeBlock html={`
+  <div>
+  <img src="https://responsivecss.dev/cover.png" />
+</div>
+`} css={`
+  img {
+  max-width: 800px;
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+}
+`}/>
+
+[object-fit: cover](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit#cover) ensures that the image maintains it's aspect-ratio even if the container doesn't fit. But then, it also clips the image to fit the container. When you resize the container above, you notice that at some point, you cannot view the whole contents of the image.
+
+A next solution for you might be media queries. This way we can say:
+* "at X screen width, the height should be 500px"
+* "at Y screen width, the height should be 400px"
+* "at Z screen width, the height should be 300px"
+
+That way, you can ensure that the content of the image is always fully visible. But this can lead to multiple media queries and it can be especially complicated if the contents of the image are at the corners.
+
+---
+
+So far, we've seen how difficult it can be managing the `width` and `height` by ourselves. It would have been easier if we just allowed the browser to figure out the height for us, but then we get the problem of layout shift, because the browser only has access to that information when it fetches the image.
+
+So how can be precisely tell the browser how much space the image needs (even before the image has been fetched) regardless of the size of the container or the screen?
+
+## `aspect-ratio` to the rescue
+
+The [`aspect-ratio`](https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio) property allows to define a "width to height" ratio for the box of an element. By defining such ratio, you can specify a `width`, and the browser calculates the `height` using the ratio.
+
+Also if you defined a `height` but didn't define a `width`, the browser calculates the `width` for you.
+
+Let's see a quick example:
+
+<CodeBlock showHTML html={`
+  <div></div>
+`} css={`
+  div {
+  aspect-ratio: 2 / 1;
+  background-color: white;
+  max-width: 200px;
+  width: 100%;
+}
+`}/>
+
+Here, we say the `div` should have an `aspect-ratio` of **2 / 1**. This means "the width of the box should be twice the height". Then we specify a `max-width` of **200px** and a `width` of **100%** so this way the box occupies all the space available but never exceeds the maximum width.
+
+But we didn't specify a `height` right? Well, the browser helps us with that. When you resize the container above, you see that whatever width the box is, the height is always half of that length.
+
+You can use different `aspect-ratio` values like:
+* **1/1** (width and height the same, a square) 
+* **16/9**
+* **0.5** (same as 1 / 2)
+
+---
+
+Now let's apply this concept to our image. The first thing is we need to know what the aspect-ratio of the image is. For the image we have been using so far, the width is **1920px** and the height is **1080px**. The simple ratio here is **1920 / 1080**.
+
+When you use this ratio, the browser can help us automatically calculate the height needed. If the width is **1920**, the browser calculates the height, based on the ratio, to be **1080**. If the width is **1000**, the browser automatically calculates the height to be **562.5px**. Whatever the width is, the browser automatically calculates the height using that ratio.
+
+Let's try it out:
+
+<CodeBlock html={`
+  <div>
+  <img src="https://responsivecss.dev/cover.png" />
+</div>
+`} css={`
+  img {
+  max-width: 800px;
+  width: 100%;
+  aspect-ratio: 1920 / 1080;
+  object-fit: cover;
+}
+`}/>
+
+As you resize the container, you see that the image is never clipped, even though we have `object-fit: cover`. That's because, the ratio of the `img` dimensions matches the ratio of the fetched image. We define a `width` and the browser uses the `aspect-ratio` to evaluate the `height`. So even if the image has not been fetched, the browser already knows how much space we want since the `width` (explictly) and the `height` (implicitly) has been provided.
+
+By using `aspect-ratio` with `max-width: X` and `width: 100%`, we have created a responsive image that adjusts to different screen/container sizes, as well as avoiding layout shift problems. Now we don't need to create many media queries for the `height`.
+
+---
+
+Using an `aspect-ratio` like **1920 / 1080** is fine, but you can also break it down. The smallest fraction for **1920 / 1080** is **16 / 9**, so you can use that instead. Or, you can even use **1.777778** which is the evaluated decimal for the fraction.
