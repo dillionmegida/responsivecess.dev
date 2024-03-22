@@ -10,6 +10,9 @@ const { title, description, heroImage } = Astro.props
 ---
 
 <BaseDocument title={title} description={description} image={heroImage}>
+  <script
+    src="https://cdn.jsdelivr.net/gh/ireade/caniuse-embed/public/caniuse-embed.min.js"
+  ></script>
   <main>
     <div class="container">
       <div class="heading">
@@ -101,12 +104,10 @@ const { title, description, heroImage } = Astro.props
         h2 {
           font-size: clamp(2.5rem, 7vw, 1.5rem);
           color: yellow;
-
         }
 
         h3 {
           font-size: clamp(2rem, 7vw, 1.2rem);
-
         }
 
         h2,
@@ -116,7 +117,7 @@ const { title, description, heroImage } = Astro.props
           padding: 20px;
           border: 1px solid
             color-mix(in srgb, var(--text-color), transparent 60%);
-            margin: 1em 0 0.5em;
+          margin: 1em 0 0.5em;
         }
 
         a {
@@ -153,18 +154,18 @@ const { title, description, heroImage } = Astro.props
           }
         }
 
-        p, ul {
+        p,
+        ul {
           line-height: 1.4;
           color: var(--text-color);
         }
-        
-        p {
 
+        p {
           margin: 20px 0 10px;
         }
 
         ul li {
-          margin-left: 20px;
+          margin-left: 30px;
           list-style: disc;
         }
 

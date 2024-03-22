@@ -8,13 +8,16 @@ heroImage: '/demos/aspect-ratio-responsive-image.png'
 import CodeBlock from "../../components/mdx/CodeBlock.astro"
 import Info from "../../components/mdx/Info.astro"
 
+The `aspect-ratio` property in CSS can allow us avoid layout shift problems while we create responsive images. But first, let's understand the problem at hand.
+
+The default behaviour of the `img` tag:
+
 <CodeBlock showHTML html={`
   <div>
   <img src="https://responsivecss.dev/cover.png" />
 </div>
 `} />
 <Info>Scroll in the container to see the rest of the image.</Info>
-
 
 When you use an `img` tag with an image, the browser uses the dimensions of the image to determine how much space the image would occupy. In the case of the image above, it occupies **1920px** `width` and **1080px** `height`. This also causes an overflow as the container for the image doesn't have the needed space.
 
@@ -93,7 +96,7 @@ That way, you can ensure that the content of the image is always fully visible. 
 
 So far, we've seen how difficult it can be managing the `width` and `height` by ourselves. It would have been easier if we just allowed the browser to figure out the height for us, but then we get the problem of layout shift, because the browser only has access to that information when it fetches the image.
 
-So how can be precisely tell the browser how much space the image needs (even before the image has been fetched) regardless of the size of the container or the screen?
+So how can we precisely tell the browser how much space the image needs (even before the image has been fetched) regardless of the size of the container or the screen?
 
 ## `aspect-ratio` to the rescue
 
@@ -116,7 +119,7 @@ Let's see a quick example:
 `}/>
 
 
-Here, we say the `div` should have an `aspect-ratio` of **2 / 1**. This means "the width of the box should be twice the height". Then we specify a `max-width` of **200px** and a `width` of **100%** so this way the box occupies all the space available but never exceeds the maximum width.
+Here, we say the `span` should have an `aspect-ratio` of **2 / 1**. This means "the width of the box should be twice the height". Then we specify a `max-width` of **200px** and a `width` of **100%** so this way the box occupies all the space available but never exceeds the maximum width.
 
 But we didn't specify a `height` right? Well, the browser helps us with that. When you resize the container above, you see that whatever width the box is, the height is always half of that length.
 
@@ -127,7 +130,7 @@ You can use different `aspect-ratio` values like:
 
 ---
 
-Now let's apply this concept to our image. The first thing is we need to know what the aspect-ratio of the image is. For the image we have been using so far, the width is **1920px** and the height is **1080px**. The simple ratio here is **1920 / 1080**.
+Now let's apply this concept to our image. The first thing is we need to know what the aspect-ratio of the image is. For the image we have been using so far, the width is **1920px** and the height is **1080px**. I designed this image on Figma using these dimensions. The simple ratio here is **1920 / 1080**.
 
 When you use this ratio, the browser can help us automatically calculate the height needed. If the width is **1920**, the browser calculates the height, based on the ratio, to be **1080**. If the width is **1000**, the browser automatically calculates the height to be **562.5px**. Whatever the width is, the browser automatically calculates the height using that ratio.
 
@@ -153,3 +156,8 @@ By using `aspect-ratio` with `max-width: X` and `width: 100%`, we have created a
 ---
 
 Using an `aspect-ratio` like **1920 / 1080** is fine, but you can also break it down. The smallest fraction for **1920 / 1080** is **16 / 9**, so you can use that instead. Or, you can even use **1.777778** which is the evaluated decimal for the fraction.
+
+Check out the browser support below:
+
+<p class="ciu_embed" data-feature="mdn-css__properties__aspect-ratio" data-periods="future_1,current,past_1,past_2" data-accessible-colours="false">
+</p>
